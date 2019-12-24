@@ -74,12 +74,39 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>F:\BaiduNetdiskDownload\irramlib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\BaiduNetdiskDownload\irramlib\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="const.cpp" />
+    <ClCompile Include="Converter.cpp" />
+    <ClCompile Include="generateIrram.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyFloat.cpp" />
+    <ClCompile Include="program1.cpp" />
+    <ClCompile Include="program2.cpp" />
+    <ClCompile Include="program3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="catch.hpp" />
+    <ClInclude Include="const.h" />
+    <ClInclude Include="Converter.h" />
+    <ClInclude Include="generateIrram.h" />
+    <ClInclude Include="MyFloat.h" />
+    <ClInclude Include="program1.h" />
+    <ClInclude Include="program3.h" />
   </ItemGroup>
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>/root/iRRAM-master/installed/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>/root/iRRAM-master/installed/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LibraryDependencies>iRRAM;mpfr;gmp;%(LibraryDependencies)</LibraryDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

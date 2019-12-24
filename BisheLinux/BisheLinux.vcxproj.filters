@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Converter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="generateIrram.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MyFloat.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="program1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="program2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="program3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="const.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{79e4ce2c-8984-4e15-b258-492a03224fc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{b5dda570-80e3-42bf-81f0-e2b54aa610ef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="catch.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="const.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Converter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="generateIrram.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MyFloat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="program1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="program3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
