@@ -1,4 +1,4 @@
-#include "Converter.h"
+﻿#include "Converter.h"
 
 
 // Convert the 32-bit binary encoding into hexadecimal

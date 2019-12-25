@@ -1,4 +1,4 @@
-#include "MyFloat.h"
+ï»¿#include "MyFloat.h"
 #include <iostream>
 #include <sstream>
 #include "Converter.h"
@@ -14,41 +14,41 @@ MyFloat::MyFloat()
 }
 
 /* 
-*	È¡ÏÂÒ»¸ö¸¡µãÊý
+*	å–ä¸‹ä¸€ä¸ªæµ®ç‚¹æ•°
 */
 MyFloat* MyFloat::up()
 {	
-	// Õý
+	// æ­£
 	if (this->bSign) {
 		if (countOne(this->ulMantissa) == MANTISSA_SIZE) {
-			// Î²ÊýÊ×Î»ÖÃ1
+			// å°¾æ•°é¦–ä½ç½®1
 			setToOne(this->ulMantissa, 2);
-			// Ö¸Êý+1
+			// æŒ‡æ•°+1
 			this->cExponent++;
 		}
 		else {
-			// Î²Êý+1
+			// å°¾æ•°+1
 			mantissaUp(true);
 		}
 	}
-	// ¸º
+	// è´Ÿ
 	else {
 		if (countOne(this->ulMantissa)==1 && (this->ulMantissa[0] >> 7) & 1 == 1) {
-			// Î²ÊýÖØÖÃ1
+			// å°¾æ•°é‡ç½®1
 			setToOne(this->ulMantissa,1);
-			// Ö¸Êý¼õ1
+			// æŒ‡æ•°å‡1
 			this->cExponent--;
 		}
 		 else if (countOne(this->ulMantissa)  == 1
 			&& (this->ulMantissa[2] >> 1) & 1 == 1
 			&& this->cExponent == 1) {
-			// ·ûºÅ±äÎªÕý
+			// ç¬¦å·å˜ä¸ºæ­£
 			this->bSign = true;
-			// Î²Êý+1
+			// å°¾æ•°+1
 			mantissaUp(true);
 		}
 		 else {
-			// Î²Êý-1
+			// å°¾æ•°-1
 			mantissaUp(false);
 		}
 	}

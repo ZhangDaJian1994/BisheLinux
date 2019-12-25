@@ -1,4 +1,4 @@
-#include <string>
+Ôªø#include <string>
 #include "const.h"
  int MANTISSA_SIZE = 23;
  int EXP_MIN = -126;
@@ -14,10 +14,30 @@ std::string IRRAM_FILE_NAME = "irramcalc";
  std::string PATH_DELIMITER = "\\";
  std::string IRRAM_LIB_PATH = "d:\\project\\irramlib\\include\\";
 
-// ∏°µ„º∆À„≥Ã–Ú & irram º∆À„≥Ã–Ú exe√˚≥∆
-std::string floatExeName = FLOAT_CPP_PATH + FLOAT_FILE_NAME + NAME_DELIMITER + EXE_SUFFIX;
-std::string irramExeName = IRRAM_CPP_PATH + IRRAM_FILE_NAME + NAME_DELIMITER + EXE_SUFFIX;
+// ÊµÆÁÇπËÆ°ÁÆóÁ®ãÂ∫è & irram ËÆ°ÁÆóÁ®ãÂ∫è exeÂêçÁß∞
+std::string floatExeName = FLOAT_FILE_NAME + NAME_DELIMITER + EXE_SUFFIX;
+std::string irramExeName = IRRAM_FILE_NAME + NAME_DELIMITER + EXE_SUFFIX;
 
-// ∏°µ„º∆À„≥Ã–Ú & irram º∆À„≥Ã–Ú cpp√˚≥∆
-std::string floatCppName = FLOAT_CPP_PATH + FLOAT_FILE_NAME + NAME_DELIMITER + CPP_SUFFIX;
-std::string irramCppName = IRRAM_CPP_PATH + IRRAM_FILE_NAME + NAME_DELIMITER + CPP_SUFFIX;
+// ÊµÆÁÇπËÆ°ÁÆóÁ®ãÂ∫è & irram ËÆ°ÁÆóÁ®ãÂ∫è cppÂêçÁß∞
+std::string floatCppName = FLOAT_FILE_NAME + NAME_DELIMITER + CPP_SUFFIX;
+std::string irramCppName = IRRAM_FILE_NAME + NAME_DELIMITER + CPP_SUFFIX;
+
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <array>
+
+std::string exec(const char* cmd) {
+	std::array<char, 128> buffer;
+	std::string result;
+	std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+	if (!pipe) {
+		throw std::runtime_error("popen() failed!");
+	}
+	while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+		result += buffer.data();
+	}
+	return result;
+}

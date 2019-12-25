@@ -1,21 +1,21 @@
-#include "program3.h"
-/*»ñÈ¡Ö¸ÁîµÄÔªÊı£¬¼´¶ÔÓ¦µÄÎ¬¶ÈÖµ*/
+ï»¿#include "program3.h"
+/*è·å–æŒ‡ä»¤çš„å…ƒæ•°ï¼Œå³å¯¹åº”çš„ç»´åº¦å€¼*/
 
 int getInstrutionVariableNumber(std::string inputInstruction) {
 	int n = 1;
-	// TODO ·ÖÎöÖ¸ÁîÓĞ¼¸¸ö±äÁ¿
-	dimension = n;
-	// ¶¨Òå³¤¶ÈÎªnµÄÊı×é£¬´æ´¢Ã¿¸öÎ¬¶Èµ±Ç°±éÀúµÄ¸¡µãÖµ
+	// TODO åˆ†ææŒ‡ä»¤æœ‰å‡ ä¸ªå˜é‡
+	int dimension = n;
+	// å®šä¹‰é•¿åº¦ä¸ºnçš„æ•°ç»„ï¼Œå­˜å‚¨æ¯ä¸ªç»´åº¦å½“å‰éå†çš„æµ®ç‚¹å€¼
 	arrNLoop = new MyFloat[dimension];
 	return n;
 }
 
 void initDataStruct(int n) {
-	// ½«Êı×éµÄÖµ³õÊ¼»¯Îª¸¡µãÊı×îĞ¡Öµ
+	// å°†æ•°ç»„çš„å€¼åˆå§‹åŒ–ä¸ºæµ®ç‚¹æ•°æœ€å°å€¼
 	init(arrNLoop);
 }
 
-/* ½«Êı×éµÄÖµ³õÊ¼»¯Îª¸¡µãÊı×îĞ¡Öµ */
+/* å°†æ•°ç»„çš„å€¼åˆå§‹åŒ–ä¸ºæµ®ç‚¹æ•°æœ€å°å€¼ */
 void init(MyFloatPtr arrNLoop)
 {
 	for (int i = 0; i < dimension; i++) {
@@ -24,15 +24,15 @@ void init(MyFloatPtr arrNLoop)
 }
 
 void init(MyFloatPtr arrNLoop, int index) {
-	// ÏÂ±êindex Ö®Ç°µÄÊı×é³õÊ¼»¯Îª¸¡µãÊı×îĞ¡Öµ
+	// ä¸‹æ ‡index ä¹‹å‰çš„æ•°ç»„åˆå§‹åŒ–ä¸ºæµ®ç‚¹æ•°æœ€å°å€¼
 	for (int i = 0; i <= index; i++) {
 		arrNLoop[i] = *FLOAT_MIN;
 	}
 	int newIndex = index+1;
 	while (newIndex < dimension) {
 		if (newIndex == dimension - 1 && arrNLoop[newIndex].isFloatMax()) {
-			// Ñ­»·½áÊø
-			loopOver = true;
+			// å¾ªç¯ç»“æŸ
+			//loopOver = true;
 		}
 		else if(arrNLoop[newIndex].isFloatMax()){
 			arrNLoop[newIndex] = *FLOAT_MIN;
@@ -44,17 +44,17 @@ void init(MyFloatPtr arrNLoop, int index) {
 		newIndex++;
 	}
 }
-/* µİ¹é¶¯Ì¬Éú³ÉNÖØÑ­»· */
+/* é€’å½’åŠ¨æ€ç”ŸæˆNé‡å¾ªç¯ */
 void cycle(int localDim, Result& result)
 {
 	MyFloat *begin = FLOAT_MIN;
 	for (; !begin->isFloatMax(); begin = begin->up())
 	{
-		// ¼ÆËã×óÖĞ¼äµã
+		// è®¡ç®—å·¦ä¸­é—´ç‚¹
 		struct MiddleValue leftMiddleVal;
 		leftMiddleVal.value = *begin;
 		leftMiddleVal.direct = false;
-		// ¼ÆËãÓÒÖĞ¼äµã
+		// è®¡ç®—å³ä¸­é—´ç‚¹
 		struct MiddleValue rightMiddleVal;
 		rightMiddleVal.value = *begin->up();
 		rightMiddleVal.direct = false;
@@ -63,20 +63,20 @@ void cycle(int localDim, Result& result)
 		{
 			result.mid[2 * (dimension - 1)] = leftMiddleVal;
 			result.mid[2 * (dimension - 1) + 1] = rightMiddleVal;
-			// ¼ÆËãÎó²î
+			// è®¡ç®—è¯¯å·®
 			calcError(result);
 
-			// TODO ÈçºÎºÏ²¢²»Í¬Î¬¶ÈµÄÎó²î
-			if (result.error == preResult->error)	// Îó²îÒ»ÖÂ£¬ºÏ²¢
+			// TODO å¦‚ä½•åˆå¹¶ä¸åŒç»´åº¦çš„è¯¯å·®
+			if (result.error == preResult->error)	// è¯¯å·®ä¸€è‡´ï¼Œåˆå¹¶
 			{
-				// ×óÖµ¸üĞÂ£¬ÓÒÖµ²»±ä
+				// å·¦å€¼æ›´æ–°ï¼Œå³å€¼ä¸å˜
 				result.mid[2 * (dimension - 1)] = preResult->mid[2 * (dimension - 1)];
-				// É¾³ı¼¯ºÏÖĞµÄpreResult
+				// åˆ é™¤é›†åˆä¸­çš„preResult
 				resultList.pop_back();
 			}
-			// (ºÏ²¢ºóµÄresult)¼ÓÈë½á¹û¼¯
+			// (åˆå¹¶åçš„result)åŠ å…¥ç»“æœé›†
 			resultList.push_back(result);
-			// ¸³ÖµĞÂµÄpreResult
+			// èµ‹å€¼æ–°çš„preResult
 			preResult = &result;
 		}
 		else
@@ -84,35 +84,35 @@ void cycle(int localDim, Result& result)
 			int curDim = dimension - localDim;
 			result.mid[2 * curDim] = leftMiddleVal;
 			result.mid[2 * curDim + 1] = rightMiddleVal;
-			// µİ¹é
+			// é€’å½’
 			cycle(localDim - 1, result);
 		}
 	}
 }
 /*
-// TODO ¿¼ÂÇÍ¨¹ıµİ¹éÊµÏÖ¶¯Ì¬NÖØÑ­»·
+// TODO è€ƒè™‘é€šè¿‡é€’å½’å®ç°åŠ¨æ€Né‡å¾ªç¯
 void calc(std::string inputInstruction) {
 	//int n = getInstrutionVariableNumber(inputInstruction);
 	//initDataStruct(n);  
-	// Èç¹ûÑ­»·Êı×é×îºóÒ»Î»ÒÑ¾­Îª¸¡µãÊı×î´óÖµ£¬ÔòÍË³öµİ¹é
+	// å¦‚æœå¾ªç¯æ•°ç»„æœ€åä¸€ä½å·²ç»ä¸ºæµ®ç‚¹æ•°æœ€å¤§å€¼ï¼Œåˆ™é€€å‡ºé€’å½’
 	if (arrNLoop[dimension-1].isFloatMax()) {
 		return;
 	}
 	for (int currentDim = 0; currentDim < dimension; ) {
-		// ±éÀúnÎ¬
+		// éå†nç»´
 		MyFloat begin = arrNLoop[currentDim];
 		for (; !begin.isFloatMax(); begin = *begin.up()) 
 		{
 			Result result;
 			result.mid = new MiddleValue[2 * dimension];
 			int index = 0;
-			// ½«Ã¿Ò»¸öÎ¬¶ÈµÄÖĞ¼äµãÖµĞ´ÈëResult
+			// å°†æ¯ä¸€ä¸ªç»´åº¦çš„ä¸­é—´ç‚¹å€¼å†™å…¥Result
 			while (index < dimension)
 			{
 				struct MiddleValue leftMiddleVal;
 				leftMiddleVal.value = arrNLoop[index];
 				leftMiddleVal.direct = false;
-				// ÓÒÖĞ¼äµãÎª¡¾ÏÂÒ»¸¡µãÊı£¬×ó¡¿
+				// å³ä¸­é—´ç‚¹ä¸ºã€ä¸‹ä¸€æµ®ç‚¹æ•°ï¼Œå·¦ã€‘
 				struct MiddleValue rightMiddleVal;
 				rightMiddleVal.value = *arrNLoop[index].up();
 				rightMiddleVal.direct = false;
@@ -121,27 +121,27 @@ void calc(std::string inputInstruction) {
 				result.mid[right] = rightMiddleVal;
 				index++;
 			}
-			// µ÷ÓÃ³ÌĞòËã³öÎó²î
+			// è°ƒç”¨ç¨‹åºç®—å‡ºè¯¯å·®
 			if (fileExist("xx") && fileExist("xx")) {
-				// TODO µ÷ÓÃfloat³ÌĞòËã³ö¸¡µã½á¹û
-				// TODO µ÷ÓÃreal³ÌĞòËã³öÊµÊı½á¹û
-				// TODO ¼ÆËãÎó²î
+				// TODO è°ƒç”¨floatç¨‹åºç®—å‡ºæµ®ç‚¹ç»“æœ
+				// TODO è°ƒç”¨realç¨‹åºç®—å‡ºå®æ•°ç»“æœ
+				// TODO è®¡ç®—è¯¯å·®
 				REAL error = "1";
 				result.error = error;
 			}
 			else {
-				// Éú³É¼ÆËã³ÌĞò£¬ÔÙ¼ÆËãÎó²î
+				// ç”Ÿæˆè®¡ç®—ç¨‹åºï¼Œå†è®¡ç®—è¯¯å·®
 			}
-			// ¼ÓÈë¼¯ºÏ
+			// åŠ å…¥é›†åˆ
 			resultList.push_back(result);
 		}
 
-		// ÓÅ»¯-Çø¼äºÏ²¢
+		// ä¼˜åŒ–-åŒºé—´åˆå¹¶
 		//intervalMerge(resList_float);
 
-		// TODO ½á¹ûĞ´ÈëÎÄ¼ş
+		// TODO ç»“æœå†™å…¥æ–‡ä»¶
 		writeFile(resultList);
-		//ÖØĞÂ³õÊ¼»¯Ñ­»·Êı×é
+		//é‡æ–°åˆå§‹åŒ–å¾ªç¯æ•°ç»„
 		if (arrNLoop[currentDim + 1].isFloatMax()) {
 			//arrNLoop[currentDim + 1] = *FLOAT_MIN;
 			init(arrNLoop, currentDim + 1);
@@ -152,7 +152,7 @@ void calc(std::string inputInstruction) {
 			arrNLoop[currentDim+1] = *arrNLoop[currentDim + 1].up();
 		}
 		//init(arrNLoop, currentDim + 1, arrNLoop[currentDim + 1].up());
-		// µİ¹é
+		// é€’å½’
 		//return calc(inputInstruction);
 }
 	}*/
@@ -164,58 +164,66 @@ bool fileExist(std::string filePath) {
 	struct stat buffer;
 	return (stat(filePath.c_str(), &buffer)) == 0;
 }
-// ºÏ²¢Çø¼ä£¬Èç¹ûÎó²îÖµ´óĞ¡Ò»ÖÂ£¬Ôò¿ÉÒÔºÏ²¢
+// åˆå¹¶åŒºé—´ï¼Œå¦‚æœè¯¯å·®å€¼å¤§å°ä¸€è‡´ï¼Œåˆ™å¯ä»¥åˆå¹¶
 void intervalMerge(std::list<Result>& resultList) {
 	int size = resultList.size();
 	//REAL* errorList = resultList.error;
 	for (int i = 0; i < size-1; i++) {
-		// Îó²îÒ»ÖÂ£¬¿ÉÒÔºÏ²¢
-		// TODO ÔõÃ´ºÏ²¢
+		// è¯¯å·®ä¸€è‡´ï¼Œå¯ä»¥åˆå¹¶
+		// TODO æ€ä¹ˆåˆå¹¶
 		
 	}
 }
 
-/* ½á¹ûĞ´ÈëÎÄ¼ş */
+/* ç»“æœå†™å…¥æ–‡ä»¶ */
 void writeFile(std::list<Result>& resultList)
 {
 	FILE* fp = fopen("result.txt", "w");
 	if (fp) {
 		std::list<Result>::iterator iter = resultList.begin();
 		for (; iter != resultList.end(); iter++) {
-			// Êä³öNÎ¬×ø±êÇø¼ä
+			// è¾“å‡ºNç»´åæ ‡åŒºé—´
 			fprintf(fp, "{");
 			for (int i = 0; i < dimension; i++) {
 				fprintf(fp, "[%s,", (*iter).mid[2 * i].value);
 				fprintf(fp, "%s],", (*iter).mid[2 * i+1].value);
 			}
 			fprintf(fp, "}");
-			// Çø¼äºÍÎó²îÖ®¼äÓÃ £º ·Ö¸î
+			// åŒºé—´å’Œè¯¯å·®ä¹‹é—´ç”¨ ï¼š åˆ†å‰²
 			fprintf(fp, ":");
-			// Êä³öÎó²î
+			// è¾“å‡ºè¯¯å·®
 			//fprintf(fp, "%s\n", iRRAM::swrite((*iter).error).c_str());
 		}
 	}
 	else {
-		std::cout << "result.txt ´ò¿ªÊ§°Ü£¡ ³ÌĞòÒì³£ÍË³ö£¡£¡£¡" << std::endl;
+		std::cout << "result.txt æ‰“å¼€å¤±è´¥ï¼ ç¨‹åºå¼‚å¸¸é€€å‡ºï¼ï¼ï¼" << std::endl;
 		exit(1);
 	}
 	fclose(fp);
 }
 
-/* ¼ÆËãÎó²î */
+/* è®¡ç®—è¯¯å·® */
 void calcError(Result& result)
 {
-	std::cout << "float¼ÆËã³ÌĞòÎÄ¼şÃû: " + floatCppName << std::endl;
-	std::cout << "irram¼ÆËã³ÌĞòÎÄ¼şÃû: " + irramCppName << std::endl;
+	std::cout << "floatè®¡ç®—ç¨‹åºæ–‡ä»¶å: " + floatCppName << std::endl;
+	std::cout << "irramè®¡ç®—ç¨‹åºæ–‡ä»¶å: " + irramCppName << std::endl;
 	if (fileExist(floatCppName) && fileExist(irramCppName)) {
-		// TODO µ÷ÓÃfloat³ÌĞòËã³ö¸¡µã½á¹û
-		// TODO µ÷ÓÃreal³ÌĞòËã³öÊµÊı½á¹û
-		// TODO ¼ÆËãÎó²î
-		iRRAM::REAL error = "1";
+		// TODO è°ƒç”¨floatç¨‹åºç®—å‡ºæµ®ç‚¹ç»“æœ
+		std::string floatExec = "./" + FLOAT_FILE_NAME;
+		std::string argv = "1.23456789";
+		std::string floatRes = execCommnd(floatExec, argv);
+		// TODO è°ƒç”¨realç¨‹åºç®—å‡ºå®æ•°ç»“æœ
+		std::string irramExec = "./" + IRRAM_FILE_NAME;
+		execCommnd(irramExec, argv);
+		std::string irramRes = execCommnd(irramExec, argv);
+		// TODO è®¡ç®—è¯¯å·®
+		iRRAM::REAL error = iRRAM::REAL(floatRes) - iRRAM::REAL(irramRes);
+		//iRRAM::REAL error = "1";
 		result.error = error;
+		iRRAM::cout << result.error << "\n";
 	}
 	else {
-		// TODO Éú³É¼ÆËã³ÌĞò£¬ÔÙ¼ÆËãÎó²î
+		// TODO ç”Ÿæˆè®¡ç®—ç¨‹åºï¼Œå†è®¡ç®—è¯¯å·®
 		std::string instruction;
 		generateFloatCpp(instruction);
 		generateIrramCpp(instruction);

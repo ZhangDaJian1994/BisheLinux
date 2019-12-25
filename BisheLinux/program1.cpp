@@ -1,29 +1,29 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <string>
 #include "program1.h"
 
 /*
-	½«Ô­Ö¸Áî×ªÎª»ã±àÖ¸Áî£¬Ô­Ö¸ÁîµÄĞÎÊ½ÓĞ»úÆ÷Âë¡¢»ã±à¡¢×Ö·û´®
-	type £º Ô­Ö¸ÁîµÄÀàĞÍ£¬ 1 £º »úÆ÷Âë, 2 £º »ã±à, 3£º×Ö·û´®
+	å°†åŸæŒ‡ä»¤è½¬ä¸ºæ±‡ç¼–æŒ‡ä»¤ï¼ŒåŸæŒ‡ä»¤çš„å½¢å¼æœ‰æœºå™¨ç ã€æ±‡ç¼–ã€å­—ç¬¦ä¸²
+	type ï¼š åŸæŒ‡ä»¤çš„ç±»å‹ï¼Œ 1 ï¼š æœºå™¨ç , 2 ï¼š æ±‡ç¼–, 3ï¼šå­—ç¬¦ä¸²
 */
 std::string sourceInstructionToCompilation(std::string input, int type) {
 	std::string result;
 	switch (type)
 	{
 	case 1:
-		// »úÆ÷Âë×ª»ã±à
+		// æœºå™¨ç è½¬æ±‡ç¼–
 		result = machineInstructionToCompilation(input);
 		break;
 	case 2:
-		// »ã±à×ª»ã±à
+		// æ±‡ç¼–è½¬æ±‡ç¼–
 		result = input;
 		break;
 	case 3:
-		// ×Ö·û´®×ª»ã±à
+		// å­—ç¬¦ä¸²è½¬æ±‡ç¼–
 		result = stringInstructionToCompilation(input);
 		break;
 	default:
-		// ÆäËûÇé¿ö
+		// å…¶ä»–æƒ…å†µ
 		result = "";
 		break;
 	}
@@ -31,7 +31,7 @@ std::string sourceInstructionToCompilation(std::string input, int type) {
 }
 
 /*
-	»úÆ÷Ö¸Áî×ªÎª»ã±àÖ¸Áî
+	æœºå™¨æŒ‡ä»¤è½¬ä¸ºæ±‡ç¼–æŒ‡ä»¤
 */
 std::string machineInstructionToCompilation(std::string machineInstruction) {
 	// TODO
@@ -39,7 +39,7 @@ std::string machineInstructionToCompilation(std::string machineInstruction) {
 }
 
 /*
-	×Ö·ûÖ¸Áî×ªÎª»ã±àÖ¸Áî
+	å­—ç¬¦æŒ‡ä»¤è½¬ä¸ºæ±‡ç¼–æŒ‡ä»¤
 */
 std::string stringInstructionToCompilation(std::string stringInstruction) {
 	// TODO

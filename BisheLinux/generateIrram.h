@@ -1,16 +1,17 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <iostream>
 #include <fstream>
 
-/* Éú³É¸¡µã¼ÆËãCPPÎÄ¼ş */
+/* ç”Ÿæˆæµ®ç‚¹è®¡ç®—CPPæ–‡ä»¶ */
 void generateFloatCpp(std::string stringInstruction);
 
-/* Éú³ÉÊµÊı¼ÆËãCPPÎÄ¼ş */
+/* ç”Ÿæˆå®æ•°è®¡ç®—CPPæ–‡ä»¶ */
 void generateIrramCpp(std::string stringInstruction);
 
-/* ±àÒëCppÎÄ¼ş */
+/* ç¼–è¯‘Cppæ–‡ä»¶ */
 void compileCpp(std::string filePath);
 
-/* Ö´ĞĞ */
-void execCommnd(std::string commnd, std::string argv);
+/* æ‰§è¡Œ */
+std::string execCommnd(std::string commnd, std::string argv);
+void execCommnd(std::string commnd);

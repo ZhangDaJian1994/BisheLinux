@@ -1,4 +1,7 @@
-#pragma once
+ï»¿//#pragma once
+#ifndef PROGRAM3_H
+
+#define PROGRAM3_H
 #include <list>
 #include <iostream>
 #include <string>
@@ -17,28 +20,28 @@ MyFloatPtr FLOAT_MIN = new MyFloat(false, -126, buffer, MANTISSA_SIZE);
 */
 
 /**
-**	V1.3 Ê¹ÓÃÄ£°åÀ´·º»¯float ºÍ double
-	MiddleValue ÓÃÀ´±íÊ¾¡¾ÖĞ¼äµã¡¿£ºÁ½¸öÏàÁÚ¸¡µãÊı×îÖĞ¼äµÄÖµ
+**	V1.3 ä½¿ç”¨æ¨¡æ¿æ¥æ³›åŒ–float å’Œ double
+	MiddleValue ç”¨æ¥è¡¨ç¤ºã€ä¸­é—´ç‚¹ã€‘ï¼šä¸¤ä¸ªç›¸é‚»æµ®ç‚¹æ•°æœ€ä¸­é—´çš„å€¼
 **/
 //template<class T>
 struct MiddleValue
 {
-	// ·ºĞÍ£¬ÓÃÓÚ±íÊ¾µ¥¾«¶È»òË«¾«¶È¸¡µãÖµ
+	// æ³›å‹ï¼Œç”¨äºè¡¨ç¤ºå•ç²¾åº¦æˆ–åŒç²¾åº¦æµ®ç‚¹å€¼
 	MyFloat value;
-	// Îªtrue ±íÊ¾ÎªdÓÒ±ßµÄ×îÁÚ½üµÄÖĞ¼äµã£¬
-	// Îªfalse ±íÊ¾Îªd×ó±ßµÄ×îÁÚ½üµÄÖĞ¼äµã
+	// ä¸ºtrue è¡¨ç¤ºä¸ºdå³è¾¹çš„æœ€é‚»è¿‘çš„ä¸­é—´ç‚¹ï¼Œ
+	// ä¸ºfalse è¡¨ç¤ºä¸ºdå·¦è¾¹çš„æœ€é‚»è¿‘çš„ä¸­é—´ç‚¹
 	bool direct;
 };
 /**
-** ÓÃÀ´´æ´¢NÎ¬¿Õ¼äÖĞ£¬Ã¿Ò»Î¬¶ÔÓ¦µÄÒ»¸öĞ¡Çø¼ä¼°¶ÔÓ¦µÄÎó²î¡£
+** ç”¨æ¥å­˜å‚¨Nç»´ç©ºé—´ä¸­ï¼Œæ¯ä¸€ç»´å¯¹åº”çš„ä¸€ä¸ªå°åŒºé—´åŠå¯¹åº”çš„è¯¯å·®ã€‚
 **/
 //template<class T>
 struct Result
 {
 	int dimension;
-	// ¸¡µãÖµ = NÎ¬¿Õ¼äµÄÄ³Ğ¡Çø¼ä¶ÔÓ¦µÄ¸¡µãÖµ
-	// error ±íÊ¾½«Õâ¸ö¸¡µãÖµ´øÈëirramÊµÊı³ÌĞò ¼õÈ¥ Õâ¸ö¸¡µãÖµ´øÈë¸¡µã³ÌĞò     // µÄ²îÖµ
-	// error = irram³ÌĞò£¨¸¡µãÖµ£©- ¸¡µã³ÌĞò£¨¸¡µãÖµ£©£»
+	// æµ®ç‚¹å€¼ = Nç»´ç©ºé—´çš„æŸå°åŒºé—´å¯¹åº”çš„æµ®ç‚¹å€¼
+	// error è¡¨ç¤ºå°†è¿™ä¸ªæµ®ç‚¹å€¼å¸¦å…¥irramå®æ•°ç¨‹åº å‡å» è¿™ä¸ªæµ®ç‚¹å€¼å¸¦å…¥æµ®ç‚¹ç¨‹åº     // çš„å·®å€¼
+	// error = irramç¨‹åºï¼ˆæµ®ç‚¹å€¼ï¼‰- æµ®ç‚¹ç¨‹åºï¼ˆæµ®ç‚¹å€¼ï¼‰ï¼›
 	iRRAM::REAL error;
 
 	/*
@@ -46,9 +49,9 @@ struct Result
 		size = n;
 		mid = mid[2 * dimension];
 	}*/
-	// NÎ¬¿Õ¼ä¹²ÓĞ2*N¸öÖĞ¼äµãÖµ£¬ÆäÖĞÃ¿Ò»Î¬¿Õ¼äÓĞÁ½¸öÖĞ¼äµã£¬ÓÃÀ´±íÊ¾ÕâÒ»Î¬     // µÄÇø¼ä·¶Î§
-	// Ã¿Ò»¸öÎ¬¶ÈµÄÁ½¸öÖµ£¬±íÊ¾Õâ¸öÎ¬¶ÈµÄÇø¼ä£¬ÕâÃ´¶àÎ¬¶È¹¹³ÉÁËÒ»¸ö·½¿é¿é
-	// ¶Ô½Çµã£¬ºÏ²¢µÄÊ±ºò±ØĞëÊÇÒ»¸ö´óµÄ·½¿é¿é
+	// Nç»´ç©ºé—´å…±æœ‰2*Nä¸ªä¸­é—´ç‚¹å€¼ï¼Œå…¶ä¸­æ¯ä¸€ç»´ç©ºé—´æœ‰ä¸¤ä¸ªä¸­é—´ç‚¹ï¼Œç”¨æ¥è¡¨ç¤ºè¿™ä¸€ç»´     // çš„åŒºé—´èŒƒå›´
+	// æ¯ä¸€ä¸ªç»´åº¦çš„ä¸¤ä¸ªå€¼ï¼Œè¡¨ç¤ºè¿™ä¸ªç»´åº¦çš„åŒºé—´ï¼Œè¿™ä¹ˆå¤šç»´åº¦æ„æˆäº†ä¸€ä¸ªæ–¹å—å—
+	// å¯¹è§’ç‚¹ï¼Œåˆå¹¶çš„æ—¶å€™å¿…é¡»æ˜¯ä¸€ä¸ªå¤§çš„æ–¹å—å—
 	struct MiddleValue *mid;
 };
 
@@ -61,32 +64,33 @@ struct ResultList
 };
 */
 
-// ÉùÃ÷Î¬¶ÈÊı×é
-MyFloatPtr arrNLoop;
+// å£°æ˜ç»´åº¦æ•°ç»„
+extern MyFloatPtr arrNLoop;
 
-// ÉùÃ÷½á¹û¼¯
-std::list<Result> resultList;
+// å£°æ˜ç»“æœé›†
+extern std::list<Result> resultList;
 
-// ÉùÃ÷ÉÏÒ»¸öResult£¬ÓÃÓÚÇø¼äºÏ²¢
-Result *preResult;
+// å£°æ˜ä¸Šä¸€ä¸ªResultï¼Œç”¨äºåŒºé—´åˆå¹¶
+extern Result *preResult;
 
-// ÉùÃ÷Î¬¶È
-int dimension = 10;
-// ÉùÃ÷Ñ­»·ÊÇ·ñ½áÊø±êÖ¾
-bool loopOver = false;
+// å£°æ˜ç»´åº¦
+extern int dimension;
+// å£°æ˜å¾ªç¯æ˜¯å¦ç»“æŸæ ‡å¿—
+// bool loopOver = false;
 
-void initDataStruct(int n);
+extern void initDataStruct(int n);
 
-void calc(std::string inputInstruction);
+extern void calc(std::string inputInstruction);
 
-void init(MyFloatPtr arrNLoop);
+extern void init(MyFloatPtr arrNLoop);
 
-bool fileExist(std::string filePath);
+extern bool fileExist(std::string filePath);
 
-void intervalMerge(std::list<Result>& resultList);
+extern void intervalMerge(std::list<Result>& resultList);
 
-void writeFile(std::list<Result>& resultList);
+extern void writeFile(std::list<Result>& resultList);
 
-void calcError(Result& result);
+extern void calcError(Result& result);
 
-void cycle(int localDim, Result& result);
+extern void cycle(int localDim, Result& result);
+#endif // !PROGRAM3_H

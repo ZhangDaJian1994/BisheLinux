@@ -1,13 +1,14 @@
-#include <string>
+ï»¿#include <string>
 #include <iostream>
 #include <fstream>
 #include "const.h"
+#include "generateIrram.h"
 
 void generateFloatCpp(std::string stringInstruction) {
-	// TODO Éú³É¸¡µãcpp
-	std::ofstream ofile;               //¶¨ÒåÊä³öÎÄ¼þ
-	std::cout << "float³ÌÐòcppÃû³Æ£º " + floatCppName << std::endl;
-	ofile.open(floatCppName);     //×÷ÎªÊä³öÎÄ¼þ´ò¿ª
+	// TODO ç”Ÿæˆæµ®ç‚¹cpp
+	std::ofstream ofile;               //å®šä¹‰è¾“å‡ºæ–‡ä»¶
+	std::cout << "floatç¨‹åºcppåç§°ï¼š " + floatCppName << std::endl;
+	ofile.open(floatCppName);     //ä½œä¸ºè¾“å‡ºæ–‡ä»¶æ‰“å¼€
 	ofile << "#include <iostream>                   " << std::endl;
 	ofile << "#include <stdlib.h>                   " << std::endl;
 	ofile << "#include <fstream>                    " << std::endl;
@@ -21,31 +22,34 @@ void generateFloatCpp(std::string stringInstruction) {
 	ofile << "y=atof(argv[2]);                      " << std::endl;
 	ofile << "}                                     " << std::endl;
 	ofile << "res=" + stringInstruction + ";"         << std::endl;
-	ofile << "std::ofstream ofile;                  " << std::endl;
-	ofile << "ofile.open(\"d:\\\\floatOut.txt\");   " << std::endl;
-	ofile << "ofile << res << \"\\n\";           " << std::endl;
-	ofile << "ofile.close();                        " << std::endl;
+	//ofile << "std::ofstream ofile;                  " << std::endl;
+	//ofile << "ofile.open(\"floatOut.txt\");   " << std::endl;
+	//ofile << "ofile << res << \"\\n\";           " << std::endl;
+	ofile << "std::cout << res;           " << std::endl;
+	//ofile << "ofile.close();                        " << std::endl;
 	ofile << "}                                     " << std::endl;
 	ofile.close();
-	std::cout << " ÇëÊäÈë²ÎÊý" << std::endl;
+	/*
+	std::cout << " è¯·è¾“å…¥å‚æ•°" << std::endl;
 	std::string argv;
 	std::getline(std::cin, argv);
 	std::string command = floatExeName + argv;
-	system(command.data());
+	system(command.data());*/
 }
 
 void generateIrramCpp(std::string stringInstruction) {
-	// TODO Éú³Éirram cpp
-	std::ofstream ofile;               //¶¨ÒåÊä³öÎÄ¼þ
-	std::cout << "irram ¼ÆËã³ÌÐòÃû³Æ£º" + irramCppName << std::endl;
-	ofile.open(irramCppName);     //×÷ÎªÊä³öÎÄ¼þ´ò¿ª
+	// TODO ç”Ÿæˆirram cpp
+	std::ofstream ofile;               //å®šä¹‰è¾“å‡ºæ–‡ä»¶
+	std::cout << "irram è®¡ç®—ç¨‹åºåç§°ï¼š" + irramCppName << std::endl;
+	ofile.open(irramCppName);     //ä½œä¸ºè¾“å‡ºæ–‡ä»¶æ‰“å¼€
 	ofile << "#include \"iRRAM/lib.h\"                                                            " << std::endl;
 	ofile << "#include \"iRRAM/core.h\"                       " << std::endl;
 	ofile << "#include <string>                                                                 " << std::endl;
-	ofile << "#include<fstream>                                                                 " << std::endl;
+	ofile << "#include <fstream>                                                                 " << std::endl;
 	ofile << "using namespace iRRAM;                                                            " << std::endl;
+	ofile << "typedef char** CHARSTART;                                                            " << std::endl;
 	ofile << "                                                                                  " << std::endl;
-	ofile << "int iRRAM_compute(int argc, char **argv) {                                        " << std::endl;
+	ofile << "int iRRAM_compute(const int &argc, const CHARSTART &argv) {                                        " << std::endl;
 	ofile << "REAL res,x,y;                                                                     " << std::endl;
 	ofile << "if (argc == 2){                                                                   " << std::endl;
 	ofile << "	x = argv[1];                                                                    " << std::endl;
@@ -55,53 +59,82 @@ void generateIrramCpp(std::string stringInstruction) {
 	ofile << "	y = argv[2];                                                                    " << std::endl;
 	ofile << "}                                                                                 " << std::endl;
 	ofile << "res = " << stringInstruction << ";" << std::endl;
-	ofile << "                                                                                  " << std::endl;
-	ofile << "int deci_places;                                                                  " << std::endl;
-	ofile << "cout << \"please input deci_places: \" ;                                                      " << std::endl;
-	ofile << "cin >> deci_places;                                                               " << std::endl;
-	ofile << "string result = swrite(res,deci_places+8);                                        " << std::endl;
-	ofile << "std::ofstream ofile;                                                           " << std::endl;
-	ofile << "ofile.open(\"d:\\\\realOut.txt\");                                                           " << std::endl;
-	ofile << "ofile << result << \"\\n\";                                                            " << std::endl;
-	ofile << "ofile.close();                                                            " << std::endl;
+	//ofile << "                                                                                  " << std::endl;
+	//ofile << "int deci_places;                                                                  " << std::endl;
+	//ofile << "cout << \"please input deci_places: \" ;                                                      " << std::endl;
+	//ofile << "cin >> deci_places;                                                               " << std::endl;
+	//ofile << "std::string result = swrite(res,deci_places+8);                                        " << std::endl;
+	//ofile << "std::ofstream ofile;                                                           " << std::endl;
+	//ofile << "ofile.open(\"irramOut.txt\");                                                           " << std::endl;
+	//ofile << "ofile << result << \"\\n\";                                                            " << std::endl;
+	ofile << "cout << res;                                                            " << std::endl;
+	//ofile << "ofile.close();                                                            " << std::endl;
 	ofile << "return 0;                                                                         " << std::endl;
 	ofile << "}                                                                                 " << std::endl;
 	ofile << "                                                                                  " << std::endl;
-	ofile << "template int iRRAM_exec <int,char **,int> (int (*) (int,char **),int, char **);   " << std::endl;
+	ofile << "template int iRRAM::iRRAM_exec <int,int,CHARSTART> (int (*) (const int &, const CHARSTART &),const int &, const CHARSTART &);   " << std::endl;
 	ofile << "                                                                                  " << std::endl;
 	ofile << "int main(int argc,char **argv) {                                                  " << std::endl;
 	ofile << "iRRAM_initialize(argc,argv);                                                      " << std::endl;
-	ofile << "iRRAM_exec(iRRAM_compute,argc,argv);                                              " << std::endl;
+	ofile << "int a = iRRAM_exec(iRRAM_compute,argc,argv);                                              " << std::endl;
 	ofile << "return 0;                                                                         " << std::endl;
 	ofile << "}                                                                                 " << std::endl;
 	ofile.close();
 	//system("g++ d:\\testReal.cpp -c -o d:\\testReal.o -I d:\\project\\irramlib\\include\\");
 	//system("g++ -o d:\\testReal.exe d:\\testReal.o d:\\project\\irramlib\\lib\\libiRRAM.a d:\\project\\irramlib\\lib\\libmpfr.a d:\\project\\irramlib\\lib\\libgmp.a");
-	std::cout << " ÇëÊäÈë²ÎÊý" << std::endl;
+	
+	/*std::cout << " è¯·è¾“å…¥å‚æ•°" << std::endl;
 	std::string argv;
 	std::getline(std::cin, argv);
 	std::string command = irramExeName + argv;
-	system(command.data());
+	system(command.data());*/
 }
 
 void compileCpp(std::string filePath) {
-	// TODO ±àÒëcppÎÄ¼þ
+	int end = filePath.find_last_of(".");
+	std::string fileName = filePath.substr(0, end);
+	/*// TODO ç¼–è¯‘cppæ–‡ä»¶
 	std::string compileCommnd;
-	std::string execCommnd;
-	int begin = filePath.find_last_of("/\\");
-	int end = filePath.find_last_of(".cpp");
-	std::string path = filePath.substr(0, begin);
-	std::string fileName = filePath.substr(begin, end);
-	std::string irramLibPath = "d:\\project\\irramlib\\include\\";
-	compileCommnd += "g++ " + filePath + " -c" + " -o " 
-		+ path +"\\"+ fileName + ".o" + " -I " + irramLibPath;
-	execCommnd += "g++ -o " + path + "\\" + fileName + ".exe "
-		+ path + "\\" + fileName + ".o";
+	std::string exeCommnd;
+	//int begin = filePath.find_last_of("/\\");
+	int end = filePath.find_last_of(".");
+	
+	std::string fileName = filePath.substr(0, end);
+	std::string irramLibPath = "/root/iRRAM-master/installed/include";
+	compileCommnd += "g++ " + filePath + " -c" + " -o "
+		+ fileName + ".o" + " -I " + irramLibPath;;
+	std::cout << compileCommnd << std::endl;
+	execCommnd(compileCommnd);
+	exeCommnd += "g++ -o " + fileName +" "
+		+ fileName + ".o";
+	std::cout << exeCommnd << std::endl;
+	execCommnd(exeCommnd);
 	//system("g++ d:\\testFloat.cpp -c -o d:\\testFloat.o -I d:\\project\\irramlib\\include\\");
 	//system("g++ -o d:\\testFloat.exe d:\\testFloat.o");
 	// TODO
+	//std::string path = filePath.substr(0, begin);
+	/*
+	g++ -std=c++11 -g -O2 -I/root/iRRAM-master/installed/include
+	-Xlinker -rpath
+	-Xlinker /root/iRRAM-master/installed/lib  thread_test.cc
+	-L/root/iRRAM-master/installed/lib -liRRAM -lmpfr -lgmp -lm -lpthread
+	-o thread_test
+	*/
+	std::string testCommnd;
+	testCommnd += "g++ -std=c++11 -g -O2 -I/root/iRRAM-master/installed/include -Xlinker -rpath -Xlinker /root/iRRAM-master/installed/lib  "
+		+ fileName + ".CPP" + " -L/root/iRRAM-master/installed/lib -liRRAM -lmpfr -lgmp -lm -lpthread -o " + fileName;
+	std::cout << testCommnd << std::endl;
+	execCommnd(testCommnd);
 }
 
-void execCommnd(std::string commnd, std::string argv) {
-	system((commnd+" "+ argv).data());
+std::string execCommnd(std::string commnd, std::string argv) {
+	//system((commnd+" "+ argv).data());
+	std::string result = exec((commnd + " " + argv).data());
+	std::cout << result << std::endl;
+	return result;
+}
+
+void execCommnd(std::string commnd)
+{
+	system(commnd.data());
 }

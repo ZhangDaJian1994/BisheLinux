@@ -1,4 +1,4 @@
-#ifndef CONST_H
+ï»¿#ifndef CONST_H
 #define CONST_H
 extern int MANTISSA_SIZE;
 extern int EXP_MIN;
@@ -14,13 +14,15 @@ extern std::string NAME_DELIMITER;
 extern std::string PATH_DELIMITER;
 extern std::string IRRAM_LIB_PATH;
 
-// ¸¡µã¼ÆËã³ÌĞò & irram ¼ÆËã³ÌĞò exeÃû³Æ
+// æµ®ç‚¹è®¡ç®—ç¨‹åº & irram è®¡ç®—ç¨‹åº exeåç§°
 extern std::string floatExeName;
 extern std::string irramExeName;
 
-// ¸¡µã¼ÆËã³ÌĞò & irram ¼ÆËã³ÌĞò cppÃû³Æ
+// æµ®ç‚¹è®¡ç®—ç¨‹åº & irram è®¡ç®—ç¨‹åº cppåç§°
 extern std::string floatCppName;
 extern std::string irramCppName;
+
+extern std::string exec(const char* cmd);
 #endif // !CONST_H
 
 

@@ -1,37 +1,37 @@
-#pragma once
+ï»¿#pragma once
 
 #include <string>
 
 
-/*×Ô¶¨Òå¸¡µãÀàĞÍ*/
+/*è‡ªå®šä¹‰æµ®ç‚¹ç±»å‹*/
 class MyFloat{
 private:
-	bool bSign; // ·ûºÅÎ» 1Î»
+	bool bSign; // ç¬¦å·ä½ 1ä½
 
-	char cExponent;	// Ö¸ÊıÎª ´Ó-126µ½127 8Î»
+	char cExponent;	// æŒ‡æ•°ä¸º ä»-126åˆ°127 8ä½
 
-	unsigned char *ulMantissa; // Î²Êı
+	unsigned char *ulMantissa; // å°¾æ•°
 
-	int mantissaSize;// Î²Êı 23Î»
+	int mantissaSize;// å°¾æ•° 23ä½
 
 public:
 	MyFloat();
 	MyFloat(bool sign, char ex, unsigned char *mantissa, int size);
-	// È¡ÏÂÒ»¸ö¸¡µãÊı
+	// å–ä¸‹ä¸€ä¸ªæµ®ç‚¹æ•°
 	MyFloat* up();
-	// Î²Êı+1
+	// å°¾æ•°+1
 	void mantissaUp(bool sign);
-	// ÅĞ¶ÏÁ½¸ö¸¡µãÊıÊÇ·ñÏàµÈ
+	// åˆ¤æ–­ä¸¤ä¸ªæµ®ç‚¹æ•°æ˜¯å¦ç›¸ç­‰
 	bool equals(MyFloat *other);
-	// ÅĞ¶ÏÊÇ·ñÎª¸¡µãÊı×î´óÖµ
+	// åˆ¤æ–­æ˜¯å¦ä¸ºæµ®ç‚¹æ•°æœ€å¤§å€¼
 	bool isFloatMax();
 	// set
 	MyFloat setToOne(unsigned char *mantissa, int type);
-	// ¼ÆËãÎ²ÊıÖĞ1µÄ¸öÊı
+	// è®¡ç®—å°¾æ•°ä¸­1çš„ä¸ªæ•°
 	int countOne(unsigned char *mantissa);
-	// ×ª»»ÎªÊ®½øÖÆ
+	// è½¬æ¢ä¸ºåè¿›åˆ¶
 	std::string to_decimal();
-	// ×ª»»Îª×Ö·û´®
+	// è½¬æ¢ä¸ºå­—ç¬¦ä¸²
     std::string to_string();
 };
 
