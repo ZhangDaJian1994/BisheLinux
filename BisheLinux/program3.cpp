@@ -4,7 +4,7 @@
 int getInstrutionVariableNumber(std::string inputInstruction) {
 	int n = 1;
 	// TODO 分析指令有几个变量
-	int dimension = n;
+	dimension = n;
 	// 定义长度为n的数组，存储每个维度当前遍历的浮点值
 	arrNLoop = new MyFloat[dimension];
 	return n;
@@ -214,17 +214,23 @@ void calcError(Result& result)
 		std::string floatRes = execCommnd(floatExec, argv);
 		// TODO 调用real程序算出实数结果
 		std::string irramExec = "./" + IRRAM_FILE_NAME;
-		execCommnd(irramExec, argv);
 		std::string irramRes = execCommnd(irramExec, argv);
 		// TODO 计算误差
-		iRRAM::REAL error = iRRAM::REAL(floatRes) - iRRAM::REAL(irramRes);
+		std::string in = "1.23";
+		iRRAM::REAL a = in.c_str();
+		iRRAM::cout << a << "----" << "\n";
+		/*
+		iRRAM::REAL floatRes_REAL = floatRes.c_str();
+		iRRAM::REAL irramRes_REAL = irramRes.c_str();
+		iRRAM::REAL error = floatRes_REAL-irramRes_REAL;
 		//iRRAM::REAL error = "1";
 		result.error = error;
-		iRRAM::cout << result.error << "\n";
+		*/
+		iRRAM::cout << "-----" <<result.error << "\n";
 	}
 	else {
 		// TODO 生成计算程序，再计算误差
-		std::string instruction;
+		std::string instruction = "y=x*x";
 		generateFloatCpp(instruction);
 		generateIrramCpp(instruction);
 		compileCpp(floatCppName);

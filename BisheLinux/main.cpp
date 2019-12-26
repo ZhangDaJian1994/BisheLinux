@@ -20,6 +20,5 @@ int main()
 	*/
 	Result *result = new Result();
 	calcError(*result);
-	system("pause");
     return 0;
 }

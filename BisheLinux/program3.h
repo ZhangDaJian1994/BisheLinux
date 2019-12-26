@@ -8,6 +8,7 @@
 #include "MyFloat.h"
 #include "const.h"
 #include "iRRAM/lib.h"
+#include "iRRAM/core.h"
 #include <sys/stat.h>
 #include "generateIrram.h"
 #define _CRT_SECURE_NO_DEPRECATE
@@ -65,32 +66,32 @@ struct ResultList
 */
 
 // 声明维度数组
-extern MyFloatPtr arrNLoop;
+static MyFloatPtr arrNLoop;
 
 // 声明结果集
-extern std::list<Result> resultList;
+static std::list<Result> resultList;
 
 // 声明上一个Result，用于区间合并
-extern Result *preResult;
+static Result *preResult;
 
 // 声明维度
-extern int dimension;
+static int dimension;
 // 声明循环是否结束标志
 // bool loopOver = false;
 
-extern void initDataStruct(int n);
+inline void initDataStruct(int n);
 
-extern void calc(std::string inputInstruction);
+inline void calc(std::string inputInstruction);
 
-extern void init(MyFloatPtr arrNLoop);
+inline void init(MyFloatPtr arrNLoop);
 
-extern bool fileExist(std::string filePath);
+inline bool fileExist(std::string filePath);
 
-extern void intervalMerge(std::list<Result>& resultList);
+inline void intervalMerge(std::list<Result>& resultList);
 
-extern void writeFile(std::list<Result>& resultList);
+inline void writeFile(std::list<Result>& resultList);
 
-extern void calcError(Result& result);
+void calcError(Result& result);
 
-extern void cycle(int localDim, Result& result);
+inline void cycle(int localDim, Result& result);
 #endif // !PROGRAM3_H
