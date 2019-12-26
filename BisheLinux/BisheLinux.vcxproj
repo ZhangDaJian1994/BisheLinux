@@ -75,7 +75,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>F:\BaiduNetdiskDownload\irramlib\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\project\irramlib\include;F:\BaiduNetdiskDownload\irramlib\include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\BaiduNetdiskDownload\irramlib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
