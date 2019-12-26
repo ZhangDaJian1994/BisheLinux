@@ -54,6 +54,20 @@ struct Result
 	// 每一个维度的两个值，表示这个维度的区间，这么多维度构成了一个方块块
 	// 对角点，合并的时候必须是一个大的方块块
 	struct MiddleValue *mid;
+
+	// 拷贝构造函数
+	void operator=(const Result& otherResult)
+	{
+		dimension = otherResult.dimension;
+		error = otherResult.error;
+		//memset(mid, 0, sizeof(int)*(2 * otherResult.dimension));                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+		mid = new MiddleValue[2 * otherResult.dimension];
+		//memcpy(mid, otherResult.mid, sizeof(int)*(2 * otherResult.dimension));
+		for (int i = 0; i < 2 * otherResult.dimension; i++)
+		{
+			mid[i] = otherResult.mid[i];
+		}
+	}
 };
 
 /*
@@ -79,19 +93,21 @@ static int dimension;
 // 声明循环是否结束标志
 // bool loopOver = false;
 
-inline void initDataStruct(int n);
+void initDataStruct(int n);
 
 inline void calc(std::string inputInstruction);
 
-inline void init(MyFloatPtr arrNLoop);
+inline void init(MyFloatPtr &arrNLoop);
 
 inline bool fileExist(std::string filePath);
 
 inline void intervalMerge(std::list<Result>& resultList);
 
-inline void writeFile(std::list<Result>& resultList);
+void writeFile(std::list<Result>& resultList);
 
 void calcError(Result& result);
 
-inline void cycle(int localDim, Result& result);
+void cycle(int localDim, Result& result);
+
+int getInstrutionVariableNumber(std::string inputInstruction);
 #endif // !PROGRAM3_H

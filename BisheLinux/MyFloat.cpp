@@ -7,7 +7,7 @@
 unsigned char buffer[4] = { 0xff,0xff,0xff,0xff };
 //MyFloat* FLOAT_MAX = new MyFloat(true, 127, buffer, MANTISSA_SIZE);
 MyFloatPtr FLOAT_MAX = new MyFloat(true, 127, buffer, MANTISSA_SIZE);
-MyFloatPtr FLOAT_MIN = new MyFloat(false, -126, buffer, MANTISSA_SIZE);
+MyFloatPtr FLOAT_MIN = new MyFloat(false, 127, buffer, MANTISSA_SIZE);
 
 MyFloat::MyFloat()
 {

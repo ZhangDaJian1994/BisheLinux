@@ -16,11 +16,12 @@ void initDataStruct(int n) {
 }
 
 /* 将数组的值初始化为浮点数最小值 */
-void init(MyFloatPtr arrNLoop)
+void init(MyFloatPtr &arrNLoop)
 {
 	for (int i = 0; i < dimension; i++) {
 		arrNLoop[i] = *FLOAT_MIN;
 	}
+	preResult = new Result();
 }
 
 void init(MyFloatPtr arrNLoop, int index) {
@@ -48,18 +49,20 @@ void init(MyFloatPtr arrNLoop, int index) {
 void cycle(int localDim, Result& result)
 {
 	MyFloat *begin = FLOAT_MIN;
+	//MyFloat *begin;
 	for (; !begin->isFloatMax(); begin = begin->up())
 	{
 		// 计算左中间点
 		struct MiddleValue leftMiddleVal;
 		leftMiddleVal.value = *begin;
 		leftMiddleVal.direct = false;
+		std::cout << "left---> " + leftMiddleVal.value.to_decimal() << std::endl;
 		// 计算右中间点
 		struct MiddleValue rightMiddleVal;
 		rightMiddleVal.value = *begin->up();
 		rightMiddleVal.direct = false;
-
-		if (dimension == 1)
+		std::cout << "right---> " + rightMiddleVal.value.to_decimal() << std::endl;
+		if (localDim == 1)
 		{
 			result.mid[2 * (dimension - 1)] = leftMiddleVal;
 			result.mid[2 * (dimension - 1) + 1] = rightMiddleVal;
@@ -67,23 +70,28 @@ void cycle(int localDim, Result& result)
 			calcError(result);
 
 			// TODO 如何合并不同维度的误差
+			/*
 			if (result.error == preResult->error)	// 误差一致，合并
 			{
 				// 左值更新，右值不变
 				result.mid[2 * (dimension - 1)] = preResult->mid[2 * (dimension - 1)];
 				// 删除集合中的preResult
 				resultList.pop_back();
-			}
+			}*/
 			// (合并后的result)加入结果集
-			resultList.push_back(result);
+			Result *newResult = new Result();
+			*newResult = result;
+			resultList.push_back(*newResult);
 			// 赋值新的preResult
-			preResult = &result;
+			preResult = newResult;
 		}
 		else
 		{
 			int curDim = dimension - localDim;
 			result.mid[2 * curDim] = leftMiddleVal;
 			result.mid[2 * curDim + 1] = rightMiddleVal;
+			// 维度变化时，重置preResult
+			preResult = new Result();
 			// 递归
 			cycle(localDim - 1, result);
 		}
@@ -216,9 +224,9 @@ void calcError(Result& result)
 		std::string irramExec = "./" + IRRAM_FILE_NAME;
 		std::string irramRes = execCommnd(irramExec, argv);
 		// TODO 计算误差
-		std::string in = "1.23";
-		iRRAM::REAL a = in.c_str();
-		iRRAM::cout << a << "----" << "\n";
+		iRRAM::REAL error = iRRAM::REAL(floatRes) - iRRAM::REAL(irramRes);
+		result.error = error;
+		iRRAM::cout << "error:" << error << "\n";
 		/*
 		iRRAM::REAL floatRes_REAL = floatRes.c_str();
 		iRRAM::REAL irramRes_REAL = irramRes.c_str();
@@ -226,7 +234,6 @@ void calcError(Result& result)
 		//iRRAM::REAL error = "1";
 		result.error = error;
 		*/
-		iRRAM::cout << "-----" <<result.error << "\n";
 	}
 	else {
 		// TODO 生成计算程序，再计算误差

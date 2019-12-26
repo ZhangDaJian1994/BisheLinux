@@ -57,9 +57,20 @@ using namespace iRRAM;
 
 int iRRAM_calc(const int &arg)
 {
+	//Result *result = new Result();
+	//calcError(*result);
+	std::cout << "请输入维度：";
+	std::cin >> dimension;
 	Result *result = new Result();
-	calcError(*result);
-	cycle()
+	result->dimension = dimension;
+	result->mid = new MiddleValue[2 * dimension];
+	// init 
+	getInstrutionVariableNumber("123");
+	initDataStruct(dimension);
+	//执行循环，计算误差
+	cycle(dimension, *result);
+	// 将结果写入文件
+	writeFile(resultList);
 	return 0;
 };
 
