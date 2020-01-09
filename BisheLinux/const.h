@@ -1,5 +1,6 @@
 ﻿#ifndef CONST_H
 #define CONST_H
+#include <vector>
 extern int MANTISSA_SIZE;
 extern int EXP_MIN;
 extern int EXP_MAX;
@@ -23,6 +24,12 @@ extern std::string floatCppName;
 extern std::string irramCppName;
 
 extern std::string exec(const char* cmd);
+
+extern std::vector<std::string> funcs;
+
+extern void replaceAll(std::string& str, const std::string& from, const std::string& to);
+
+extern bool isLetter(char&);
 #endif // !CONST_H
 
 

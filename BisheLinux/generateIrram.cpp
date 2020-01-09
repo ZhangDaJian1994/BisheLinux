@@ -29,12 +29,6 @@ void generateFloatCpp(std::string stringInstruction) {
 	//ofile << "ofile.close();                        " << std::endl;
 	ofile << "}                                     " << std::endl;
 	ofile.close();
-	/*
-	std::cout << " 请输入参数" << std::endl;
-	std::string argv;
-	std::getline(std::cin, argv);
-	std::string command = floatExeName + argv;
-	system(command.data());*/
 }
 
 void generateIrramCpp(std::string stringInstruction) {
@@ -46,7 +40,7 @@ void generateIrramCpp(std::string stringInstruction) {
 	ofile << "#include \"iRRAM/core.h\"                       " << std::endl;
 	ofile << "#include <string>                                                                 " << std::endl;
 	ofile << "#include <fstream>                                                                 " << std::endl;
-	ofile << "using namespace iRRAM;                                                            " << std::endl;
+	ofile << "using namespace iRRAM;                                                             " << std::endl;
 	ofile << "typedef char** CHARSTART;                                                            " << std::endl;
 	ofile << "                                                                                  " << std::endl;
 	ofile << "int iRRAM_compute(const int &argc, const CHARSTART &argv) {                                        " << std::endl;
@@ -67,7 +61,7 @@ void generateIrramCpp(std::string stringInstruction) {
 	//ofile << "std::ofstream ofile;                                                           " << std::endl;
 	//ofile << "ofile.open(\"irramOut.txt\");                                                           " << std::endl;
 	//ofile << "ofile << result << \"\\n\";                                                            " << std::endl;
-	ofile << "cout << res;                                                            " << std::endl;
+	ofile << "cout << setRwidth(100) << res;                                                            " << std::endl;
 	//ofile << "ofile.close();                                                            " << std::endl;
 	ofile << "return 0;                                                                         " << std::endl;
 	ofile << "}                                                                                 " << std::endl;
@@ -80,57 +74,20 @@ void generateIrramCpp(std::string stringInstruction) {
 	ofile << "return 0;                                                                         " << std::endl;
 	ofile << "}                                                                                 " << std::endl;
 	ofile.close();
-	//system("g++ d:\\testReal.cpp -c -o d:\\testReal.o -I d:\\project\\irramlib\\include\\");
-	//system("g++ -o d:\\testReal.exe d:\\testReal.o d:\\project\\irramlib\\lib\\libiRRAM.a d:\\project\\irramlib\\lib\\libmpfr.a d:\\project\\irramlib\\lib\\libgmp.a");
-	
-	/*std::cout << " 请输入参数" << std::endl;
-	std::string argv;
-	std::getline(std::cin, argv);
-	std::string command = irramExeName + argv;
-	system(command.data());*/
 }
 
 void compileCpp(std::string filePath) {
 	int end = filePath.find_last_of(".");
 	std::string fileName = filePath.substr(0, end);
-	/*// TODO 编译cpp文件
-	std::string compileCommnd;
-	std::string exeCommnd;
-	//int begin = filePath.find_last_of("/\\");
-	int end = filePath.find_last_of(".");
-	
-	std::string fileName = filePath.substr(0, end);
-	std::string irramLibPath = "/root/iRRAM-master/installed/include";
-	compileCommnd += "g++ " + filePath + " -c" + " -o "
-		+ fileName + ".o" + " -I " + irramLibPath;;
-	std::cout << compileCommnd << std::endl;
-	execCommnd(compileCommnd);
-	exeCommnd += "g++ -o " + fileName +" "
-		+ fileName + ".o";
-	std::cout << exeCommnd << std::endl;
-	execCommnd(exeCommnd);
-	//system("g++ d:\\testFloat.cpp -c -o d:\\testFloat.o -I d:\\project\\irramlib\\include\\");
-	//system("g++ -o d:\\testFloat.exe d:\\testFloat.o");
-	// TODO
-	//std::string path = filePath.substr(0, begin);
-	/*
-	g++ -std=c++11 -g -O2 -I/root/iRRAM-master/installed/include
-	-Xlinker -rpath
-	-Xlinker /root/iRRAM-master/installed/lib  thread_test.cc
-	-L/root/iRRAM-master/installed/lib -liRRAM -lmpfr -lgmp -lm -lpthread
-	-o thread_test
-	*/
 	std::string testCommnd;
 	testCommnd += "g++ -std=c++11 -g -O2 -I/root/iRRAM-master/installed/include -Xlinker -rpath -Xlinker /root/iRRAM-master/installed/lib  "
 		+ fileName + ".CPP" + " -L/root/iRRAM-master/installed/lib -liRRAM -lmpfr -lgmp -lm -lpthread -o " + fileName;
-	std::cout << testCommnd << std::endl;
+	//std::cout << testCommnd << std::endl;
 	execCommnd(testCommnd);
 }
 
 std::string execCommnd(std::string commnd, std::string argv) {
-	//system((commnd+" "+ argv).data());
 	std::string result = exec((commnd + " " + argv).data());
-	std::cout << result << std::endl;
 	return result;
 }
 

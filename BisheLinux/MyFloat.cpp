@@ -2,29 +2,31 @@
 #include <iostream>
 #include <sstream>
 #include "Converter.h"
-#include "const.h"
 
-unsigned char buffer[4] = { 0xff,0xff,0xff,0xff };
-//MyFloat* FLOAT_MAX = new MyFloat(true, 127, buffer, MANTISSA_SIZE);
-MyFloatPtr FLOAT_MAX = new MyFloat(true, 127, buffer, MANTISSA_SIZE);
-MyFloatPtr FLOAT_MIN = new MyFloat(false, 127, buffer, MANTISSA_SIZE);
 
 MyFloat::MyFloat()
 {
 }
 
-/* 
+/*
 *	取下一个浮点数
 */
 MyFloat* MyFloat::up()
-{	
+{
 	// 正
 	if (this->bSign) {
-		if (countOne(this->ulMantissa) == MANTISSA_SIZE) {
+		int man = (this->matntissa & 0x7fffff0000000000)>> (64 - mantissaSize);
+		// 尾数全是1
+		if (this->mantissa.all())
+		{
 			// 尾数首位置1
-			setToOne(this->ulMantissa, 2);
+			//将bitset的每一位全部置为０
+			this->mantissa.reset();
+			//将尾数第一位置为1
+			this->mantissa.set(0);
 			// 指数+1
-			this->cExponent++;
+			expUp(true);
+			//this->cExponent++;
 		}
 		else {
 			// 尾数+1
@@ -33,21 +35,25 @@ MyFloat* MyFloat::up()
 	}
 	// 负
 	else {
-		if (countOne(this->ulMantissa)==1 && (this->ulMantissa[0] >> 7) & 1 == 1) {
+		bitset<8> exp_min("00000001");
+		//if (this->mantissa.count() == 1 && this->mantissa.test(22))
+		if (this->mantissa.count() == 0)
+		{
 			// 尾数重置1
-			setToOne(this->ulMantissa,1);
+			this->mantissa.reset().flip();
 			// 指数减1
-			this->cExponent--;
+			expUp(false);
 		}
-		 else if (countOne(this->ulMantissa)  == 1
-			&& (this->ulMantissa[2] >> 1) & 1 == 1
-			&& this->cExponent == 1) {
+		else if (this->mantissa.count() == 1
+			&& this->mantissa.test(0)
+			&& this->cExponent == exp_min)
+		{
 			// 符号变为正
 			this->bSign = true;
 			// 尾数+1
-			mantissaUp(true);
+			//mantissaUp(true);
 		}
-		 else {
+		else {
 			// 尾数-1
 			mantissaUp(false);
 		}
@@ -56,23 +62,42 @@ MyFloat* MyFloat::up()
 }
 
 void MyFloat::mantissaUp(bool sign)
-{	
+{
+	bitset<23> a = this->mantissa;
+	bitset<23> b("00000000000000000000001");
 	// +1
 	if (sign) {
-
+		bitset<23> s(a.to_ullong() + 1);
+		this->mantissa = s;
 	}
 	// -1
 	else {
-
+		bitset<23> s(a.to_ullong() - 1);
+		this->mantissa = s;
 	}
 }
 
-bool MyFloat::equals(MyFloat *other)
+void MyFloat::expUp(bool sign)
 {
-	return (this->bSign == other->bSign) 
-		&& (this->cExponent == other->cExponent)
-		&& (this->ulMantissa == other->ulMantissa)
-		&& (this->mantissaSize == other->mantissaSize);
+	bitset<8> a = this->cExponent;
+	bitset<8> b("00000001");
+	if (sign) // +1
+	{
+		bitset<8> s(a.to_ulong() + 1);
+		this->cExponent = s;
+	}
+	else //-1
+	{
+		bitset<8> s(a.to_ulong() - 1);
+		this->cExponent = s;
+	}
+}
+
+bool MyFloat::equals(const MyFloat &other)
+{
+	return (this->bSign == other.bSign)
+		&& (this->cExponent == other.cExponent)
+		&& (this->mantissa == other.mantissa);
 }
 
 bool MyFloat::isFloatMax()
@@ -80,85 +105,45 @@ bool MyFloat::isFloatMax()
 	return this->equals(FLOAT_MAX);
 }
 
-MyFloat MyFloat::setToOne(unsigned char *mantissa, int type)
-{
-	if (type == 1) {
-		unsigned char one[4] = { 0xff,0xff,0xff,0xff };
-		this->ulMantissa = one;
-	}
-	else if (type == 2) {
-		unsigned char one[4] = { 0x80,0x00,0x00 };
-		this->ulMantissa = one;
-	}
-	return MyFloat();
-}
 
-int MyFloat::countOne(unsigned char *mantissa)
-{
-	int count = 0;
-	int index = 0;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 7; j >= 0; j--) {
-			index++;
-			if (index == MANTISSA_SIZE) {
-				break;
-			}
-			if ((mantissa[i] >> j) & 1 == 1) {
-				count++;
-			}
-		}
-	}
-	return count;
-}
-
-
-MyFloat::MyFloat(bool sign, char ex, unsigned char* mantissa, int size)
+MyFloat::MyFloat(bool sign, bitset<8>& ex, bitset<23>& mantissa)
 {
 	this->bSign = sign;
 	this->cExponent = ex;
-	this->ulMantissa = mantissa;
-	this->mantissaSize = size;
+	this->mantissa = mantissa;
 }
 
 std::string MyFloat::to_decimal()
 {
-	float result = GetFloat32(this->to_string());
-	std::ostringstream ss;
-	ss << result;
-	std::string s(ss.str());
-	std::cout << s << std::endl;
-	return s;
+	iRRAM::REAL real = GetFloat32(this->to_string());
+	std::string res = iRRAM::swrite(real, 50);
+	return res;
 }
 
 std::string MyFloat::to_string()
 {
-	char result[32];
-	int index = 0;
-	if (this->bSign) {
-		result[index++] = '0';
+	std::string result;
+	if (this->bSign)
+	{
+		result += "0";
 	}
-	else {
-		result[index++] = '1';
+	else
+	{
+		result += "1";
 	}
-	std::cout << this->cExponent << std::endl;
-	char ex = this->cExponent + 127;
-	int temp;
-	for (int i = 7; i >= 0; i--) {
-		temp = (ex >> i) & 1;
-		result[index++] = temp+'0';
-	}
-
-	for (int i = 0; i < 4; i++) {
-		for (int j = 7; j >= 0; j--) {
-			if (index == 32) {
-				break;
-			}
-			char temp = this->ulMantissa[i] >> j;
-			result[index++] = (temp & 1) + '0';
-		}
-	}
-	std::string s(&result[0], &result[32]);
-	return s;
+	result += this->cExponent.to_string();
+	result += this->mantissa.to_string();
+	return result;
 }
 
+std::string MyFloat::to_middle_value()
+{
+	iRRAM::REAL middle_value = GetFloat33(this->to_string());
+	std::string middle_string = iRRAM::swrite(middle_value, 50);
+	return middle_string;
+}
 
+bool MyFloat::getSign()
+{
+	return this->bSign;
+}

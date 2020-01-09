@@ -1,25 +1,53 @@
-﻿#include "program3.h"
-/*获取指令的元数，即对应的维度值*/
+﻿#include <iomanip>
+#include "program3.h"
+#include "Converter.h"
 
+// 优先队列的定义
+std::priority_queue<Result, std::vector<Result>, CompareError> pq;
+
+// 默认精度50
+int percision = 100;
+
+/*获取指令的元数，即对应的维度值*/
 int getInstrutionVariableNumber(std::string inputInstruction) {
-	int n = 1;
-	// TODO 分析指令有几个变量
-	dimension = n;
-	// 定义长度为n的数组，存储每个维度当前遍历的浮点值
-	arrNLoop = new MyFloat[dimension];
-	return n;
+	std::vector<std::string>::iterator iter;
+	for (iter = funcs.begin(); iter != funcs.end(); iter++)
+	{
+		replaceAll(inputInstruction, (*iter), "");
+	}
+	int count = 0;
+	for (int i = 0; i < inputInstruction.length(); i++)
+	{
+		char curChar = inputInstruction[i];
+		if (isLetter(curChar) && iVarSet.find(curChar) == iVarSet.end())
+		{
+			iVarSet.insert(curChar);
+			count++;
+		}
+	}
+	iVarSet.clear();
+	std::cout << "自变量有-" << count << "-个" << std::endl;
+	return count;
 }
 
-void initDataStruct(int n) {
-	// 将数组的值初始化为浮点数最小值
-	init(arrNLoop);
+void initDataStruct(int n, std::string instr) {
+	
+	dimension = n;
+	instruction = instr;
+	//cycleModel = model;
+	//num = Num;
+	//// 定义长度为n的数组，存储每个维度当前遍历的浮点值
+	//arrNLoop = new MyFloat[dimension];
+	//// 将数组的值初始化为浮点数最小值
+	//init(arrNLoop);
+
 }
 
 /* 将数组的值初始化为浮点数最小值 */
 void init(MyFloatPtr &arrNLoop)
 {
 	for (int i = 0; i < dimension; i++) {
-		arrNLoop[i] = *FLOAT_MIN;
+		arrNLoop[i] = FLOAT_MIN;
 	}
 	preResult = new Result();
 }
@@ -27,7 +55,7 @@ void init(MyFloatPtr &arrNLoop)
 void init(MyFloatPtr arrNLoop, int index) {
 	// 下标index 之前的数组初始化为浮点数最小值
 	for (int i = 0; i <= index; i++) {
-		arrNLoop[i] = *FLOAT_MIN;
+		arrNLoop[i] = FLOAT_MIN;
 	}
 	int newIndex = index+1;
 	while (newIndex < dimension) {
@@ -36,7 +64,7 @@ void init(MyFloatPtr arrNLoop, int index) {
 			//loopOver = true;
 		}
 		else if(arrNLoop[newIndex].isFloatMax()){
-			arrNLoop[newIndex] = *FLOAT_MIN;
+			arrNLoop[newIndex] = FLOAT_MIN;
 		}
 		else {
 			arrNLoop[newIndex] = *arrNLoop[newIndex].up();
@@ -48,20 +76,84 @@ void init(MyFloatPtr arrNLoop, int index) {
 /* 递归动态生成N重循环 */
 void cycle(int localDim, Result& result)
 {
-	MyFloat *begin = FLOAT_MIN;
-	//MyFloat *begin;
-	for (; !begin->isFloatMax(); begin = begin->up())
+	MyFloatPtr begin = FLOAT_MIN_PTR;
+	MyFloatPtr end = FLOAT_MAX_PTR;
+	/*switch (cycleModel)
 	{
-		// 计算左中间点
+	case 1:
+		begin = FLOAT_MIN_PTR;
+		break;
+	case 2: 
+		begin = FLOAT_POS_MIN_PTR;
+		break;
+	case 3:
+		begin = FLOAT_NEG_MAX_PTR;
+		break;
+	case 4:
+		begin = FLOAT_NEG_SMALL_PTR;
+		break;
+	case 5:
+		begin = FLOAT_NEG_ONE_PTR;
+		end = FLOAT_POS_ONE_PTR;
+		break;
+	case 6:
+		begin = FLOAT_NEG_ZERO_ONE_PTR;
+		end = FLOAT_POS_ZERO_ONE_PTR;
+		break;
+	default:
+		break;
+	}*/
+	std::cout << begin->to_string() << std::endl;
+	MyFloat last = *begin;
+	for (; !begin->equals(*end); )
+	{
 		struct MiddleValue leftMiddleVal;
-		leftMiddleVal.value = *begin;
-		leftMiddleVal.direct = false;
-		std::cout << "left---> " + leftMiddleVal.value.to_decimal() << std::endl;
-		// 计算右中间点
 		struct MiddleValue rightMiddleVal;
-		rightMiddleVal.value = *begin->up();
-		rightMiddleVal.direct = false;
-		std::cout << "right---> " + rightMiddleVal.value.to_decimal() << std::endl;
+		// 计算左中间点
+		if ((*begin).equals(FLOAT_MIN))
+		{
+			leftMiddleVal.value = *begin;
+			leftMiddleVal.direct = false;
+			rightMiddleVal.value = *begin;
+			rightMiddleVal.direct = true;
+			begin = begin->up();
+		}
+		else
+		{
+			//正
+			if (begin->getSign())
+			{
+				//std::cout << "last: " << last.to_string() << std::endl;
+				leftMiddleVal.value = last;
+				leftMiddleVal.direct = true;
+				iRRAM::REAL leftMid_real = GetFloat33(leftMiddleVal.value.to_string());
+				std::string leftMid = iRRAM::swrite(leftMid_real, 50);
+				//std::cout << "leftMid---> " + leftMid << std::endl;
+				rightMiddleVal.value = *begin;
+				rightMiddleVal.direct = true;
+				iRRAM::REAL rightMid_real = GetFloat33(rightMiddleVal.value.to_string());
+				std::string rightMid = iRRAM::swrite(rightMid_real, 50);
+				//std::cout << "rightMid---> " + rightMid << std::endl;
+				begin = begin->up();
+			}
+			// 负
+			else
+			{
+				leftMiddleVal.value = *begin;
+				leftMiddleVal.direct = true;
+				//std::cout << "leftFloat---> " + begin->to_string() << std::endl;
+				//iRRAM::REAL leftMid_real = GetFloat33(leftMiddleVal.value.to_string());
+				//std::string leftMid = iRRAM::swrite(leftMid_real, 50);
+				//std::cout << "leftMid---> " + leftMid << std::endl;
+				rightMiddleVal.value = *(begin->up());
+				rightMiddleVal.direct = true;
+				/*std::cout << "rightFloat---> " + end->to_string() << std::endl; 
+				iRRAM::REAL rightMid_real = GetFloat33(rightMiddleVal.value.to_string());
+				std::string rightMid = iRRAM::swrite(rightMid_real, 50);
+				std::cout << "rightMid---> " + rightMid << std::endl;*/
+			}
+			
+		}
 		if (localDim == 1)
 		{
 			result.mid[2 * (dimension - 1)] = leftMiddleVal;
@@ -81,9 +173,17 @@ void cycle(int localDim, Result& result)
 			// (合并后的result)加入结果集
 			Result *newResult = new Result();
 			*newResult = result;
-			resultList.push_back(*newResult);
+			//resultList.push_back(*newResult);
+			// 区间-误差 写入文件
+			writeToFile(result);
+			// 区间-方程 写入文件
+			std::string equat = errorToEquation(result);
+			writeToFile(result, equat);
+			// add to priority_queue
+			addToPriorityQueue(pq, *newResult);
 			// 赋值新的preResult
 			preResult = newResult;
+			last = *begin;
 		}
 		else
 		{
@@ -179,11 +279,11 @@ void intervalMerge(std::list<Result>& resultList) {
 	for (int i = 0; i < size-1; i++) {
 		// 误差一致，可以合并
 		// TODO 怎么合并
-		
 	}
 }
 
-/* 结果写入文件 */
+
+/* 结果列表写入文件 */
 void writeFile(std::list<Result>& resultList)
 {
 	FILE* fp = fopen("result.txt", "w");
@@ -213,35 +313,167 @@ void writeFile(std::list<Result>& resultList)
 /* 计算误差 */
 void calcError(Result& result)
 {
-	std::cout << "float计算程序文件名: " + floatCppName << std::endl;
-	std::cout << "irram计算程序文件名: " + irramCppName << std::endl;
-	if (fileExist(floatCppName) && fileExist(irramCppName)) {
+	//std::cout << "float计算程序文件名: " + floatCppName << std::endl;
+	//std::cout << "irram计算程序文件名: " + irramCppName << std::endl;
+	if (fileExist(FLOAT_FILE_NAME) && fileExist(IRRAM_FILE_NAME)) {
 		// TODO 调用float程序算出浮点结果
 		std::string floatExec = "./" + FLOAT_FILE_NAME;
-		std::string argv = "1.23456789";
+		//std::string argv = "1.23456789";
+		std::string argv = result.mid[0].value.to_decimal();
+
+		//std::string argv = iRRAM::swrite(result.mid[0].value.to_decimal(), 50);
+		std::cout << "argv: " << argv << std::endl;
 		std::string floatRes = execCommnd(floatExec, argv);
 		// TODO 调用real程序算出实数结果
 		std::string irramExec = "./" + IRRAM_FILE_NAME;
 		std::string irramRes = execCommnd(irramExec, argv);
-		// TODO 计算误差
-		iRRAM::REAL error = iRRAM::REAL(floatRes) - iRRAM::REAL(irramRes);
-		result.error = error;
-		iRRAM::cout << "error:" << error << "\n";
-		/*
-		iRRAM::REAL floatRes_REAL = floatRes.c_str();
-		iRRAM::REAL irramRes_REAL = irramRes.c_str();
-		iRRAM::REAL error = floatRes_REAL-irramRes_REAL;
-		//iRRAM::REAL error = "1";
-		result.error = error;
-		*/
+		std::cout << "irramRes:" << irramRes << std::endl;
+		// TODO 计算误差 
+		iRRAM::REAL err = iRRAM::REAL(irramRes) - iRRAM::REAL(floatRes);
+		result.error = err;
+		iRRAM::cout <<  "error:" << iRRAM::setRwidth(100) << err << "\n";
 	}
 	else {
 		// TODO 生成计算程序，再计算误差
-		std::string instruction = "y=x*x";
+		//std::string instruction = "y=x/3";
 		generateFloatCpp(instruction);
 		generateIrramCpp(instruction);
 		compileCpp(floatCppName);
 		compileCpp(irramCppName);
 		calcError(result);
+	}
+}
+
+/* 结果写入文件 */
+void writeToFile(Result &result)
+{
+	FILE* fp = fopen("result.txt", "a+");
+	if (fp != NULL) {
+		// 输出N维坐标区间
+		fprintf(fp, "{");
+		for (int i = 0; i < dimension; i++) {
+			fprintf(fp, "[%s,", result.mid[2 * i].value.to_middle_value().c_str());
+			fprintf(fp, "%s", result.mid[2 * i + 1].value.to_middle_value().c_str());
+			if (i == dimension - 1)	fprintf(fp, "]");
+			else fprintf(fp, "],");
+		}
+		fprintf(fp, "}");
+		// 区间和误差之间用 ： 分割
+		fprintf(fp, ":");
+		// 输出误差
+		fprintf(fp, "%s\r\n", iRRAM::swrite(result.error, 100).c_str());
+		fclose(fp);
+	}
+	else {
+		std::cout << "result.txt 打开失败！ 程序异常退出！！！" << std::endl;
+		exit(1);
+	}
+}
+
+void writeToFile(Result &result, std::string& equation)
+{
+	FILE* fp = fopen("equation.txt", "a+");
+	if (fp != NULL) {
+		fprintf(fp, "{");
+		for (int i = 0; i < dimension; i++) {
+			fprintf(fp, "[%s,", result.mid[2 * i].value.to_middle_value().c_str());
+			fprintf(fp, "%s", result.mid[2 * i + 1].value.to_middle_value().c_str());
+			if (i == dimension - 1)	fprintf(fp, "]");
+			else fprintf(fp, "],");
+		}
+		fprintf(fp, "}");
+		// 区间和误差之间用 ： 分割
+		fprintf(fp, ":");
+		fprintf(fp, "%s\r\n", equation.c_str());
+		fclose(fp);
+	}
+	else {
+		std::cout << "equation.txt 打开失败！ 程序异常退出！！！" << std::endl;
+		exit(1);
+	}
+}
+
+void writePqToFile(Result& result)
+{
+	FILE* fp = fopen("pq.txt", "a+");
+	if (fp != NULL) {
+		// 输出N维坐标区间
+		fprintf(fp, "{");
+		for (int i = 0; i < dimension; i++) {
+			fprintf(fp, "[%s,", result.mid[2 * i].value.to_middle_value().c_str());
+			fprintf(fp, "%s", result.mid[2 * i + 1].value.to_middle_value().c_str());
+			if (i == dimension - 1)	fprintf(fp, "]");
+			else fprintf(fp, "],");
+		}
+		fprintf(fp, "}");
+		// 区间和误差之间用 ： 分割
+		fprintf(fp, ":");
+		// 输出误差
+		fprintf(fp, "%s\r\n", iRRAM::swrite(result.error, 100).c_str());
+		fclose(fp);
+	}
+	else {
+		std::cout << "result.txt 打开失败！ 程序异常退出！！！" << std::endl;
+		exit(1);
+	}
+
+}
+
+void errorListToEquation(std::list<Result>& resultList)
+{
+	std::list<Result>::iterator iter;
+	for (iter = resultList.begin() ; iter != resultList.end(); iter++)
+	{
+		std::string temp;
+		temp += instruction + "-" + equaltionConvert((*iter).mid[1].value);
+		//equationList.push_back(temp);
+		//writeToFile(temp);
+	}
+}
+
+std::string errorToEquation(Result &result)
+{
+	std::string temp;
+	temp += instruction + "-(" + equaltionConvert(result.mid[1].value) + ")";
+	//equationList.push_back(temp);
+	return temp;
+	//writeToFile(temp);
+}
+
+std::string equaltionConvert(MyFloat &x)
+{
+	std::string result;
+	int len = instruction.length();
+	for (int i = 0; i < len; i++)
+	{
+		// 是变量
+		if ('a' <= instruction[i] && instruction[i] <= 'z' || 'A' <= instruction[i] && instruction[i] <= 'Z')
+		{
+			result += x.to_decimal();
+		}
+		else
+		{
+			result += instruction[i];
+		}
+	}
+	//std::cout << result << std::endl;
+	return result;
+}
+
+void addToPriorityQueue(std::priority_queue<Result, std::vector<Result>, CompareError>&pq, Result& result)
+{
+	if (priority_queue_size < num)
+	{
+		pq.push(result);
+		std::cout << "priority_queue size: " << pq.size() << std::endl;
+		priority_queue_size++;
+	}
+	else
+	{
+		if (iRRAM::abs(result.error) > iRRAM::abs(pq.top().error))
+		{
+			pq.pop();
+			pq.push(result);
+		}
 	}
 }
